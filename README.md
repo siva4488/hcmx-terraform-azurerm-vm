@@ -1,0 +1,1 @@
+# hcmx-terraform-azurerm-vm
