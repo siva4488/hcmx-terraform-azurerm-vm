@@ -125,6 +125,7 @@ resource "azurerm_network_interface" "hcmxexample" {
     name                          = "internalprivateip"
     subnet_id                     = azurerm_subnet.hcmxexample.id
     private_ip_address_allocation = "Dynamic"
+                 }
   }
   
  resource "azurerm_linux_virtual_machine" "hcmxexample" {
