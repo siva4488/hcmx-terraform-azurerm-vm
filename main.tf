@@ -38,7 +38,7 @@ resource "azurerm_public_ip" "hcmxexample" {
 }
 
 data "azurerm_public_ip" "hcmxexample" {
-  name                = "name_of_public_ip"
+  name                = var.name
   resource_group_name = azurerm_resource_group.hcmxexample.name
 }
 
@@ -113,7 +113,7 @@ resource "azurerm_subnet" "hcmxexample" {
   name                 = "internalsubnet"
   resource_group_name  = azurerm_resource_group.hcmxexample.name
   virtual_network_name = azurerm_virtual_network.hcmxexample.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.0.0/16"]
 }
 
 resource "azurerm_network_interface" "hcmxexample" {
