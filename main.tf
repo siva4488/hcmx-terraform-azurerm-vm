@@ -29,30 +29,17 @@ resource "azurerm_resource_group" "hcmxexample" {
 resource "azurerm_public_ip" "hcmxexample" {
   name                = var.name
   resource_group_name = azurerm_resource_group.hcmxexample.name
-  location            = azurerm_resource_group.hcmxexample.location
+  location            = var.location
   allocation_method   = "Dynamic"
 
   tags = {
-    environment = "Production"
+    environment = "Development"
   }
-}
-
-data "azurerm_public_ip" "hcmxexample" {
-  name                = var.name
-  resource_group_name = azurerm_resource_group.hcmxexample.name
-}
-
-output "domain_name_label" {
-  value = data.azurerm_public_ip.hcmxexample.domain_name_label
-}
-
-output "public_ip_address" {
-  value = data.azurerm_public_ip.hcmxexample.ip_address
 }
 
 resource "azurerm_network_security_group" "hcmxexample" {
   name                = var.name
-  location            = azurerm_resource_group.hcmxexample.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.hcmxexample.name
   }
   
@@ -71,69 +58,50 @@ resource "azurerm_network_security_group" "hcmxexample" {
 }
 
 resource "azurerm_network_ddos_protection_plan" "hcmxexample" {
-  name                = "ddospplan1"
-  location            = azurerm_resource_group.hcmxexample.location
+  name                = var.name
+  location            = var.location
   resource_group_name = azurerm_resource_group.hcmxexample.name
 }
 
 resource "azurerm_virtual_network" "hcmxexample" {
-  name                = "virtualNetwork1"
+  name                = var.name
   location            = azurerm_resource_group.hcmxexample.location
   resource_group_name = azurerm_resource_group.hcmxexample.name
   address_space       = ["10.0.0.0/16"]
-  dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
   ddos_protection_plan {
     id     = azurerm_network_ddos_protection_plan.hcmxexample.id
     enable = true
   }
 
-  subnet {
-    name           = "subnet1"
-    address_prefix = "10.0.1.0/24"
-  }
-
-  subnet {
-    name           = "subnet2"
-    address_prefix = "10.0.2.0/24"
-  }
-
-  subnet {
-    name           = "subnet3"
-    address_prefix = "10.0.3.0/24"
-    security_group = azurerm_network_security_group.hcmxexample.id
-  }
-
-  tags = {
-    environment = "Production"
-  }
 }
 
 resource "azurerm_subnet" "hcmxexample" {
-  name                 = "internalsubnet"
+  name                 = var.name
   resource_group_name  = azurerm_resource_group.hcmxexample.name
   virtual_network_name = azurerm_virtual_network.hcmxexample.name
-  address_prefixes     = ["10.0.0.0/16"]
+  address_prefixes     = ["10.0.2.0/24"]
 }
 
 resource "azurerm_network_interface" "hcmxexample" {
-  name                = "hcmxexample-nic"
-  location            = azurerm_resource_group.hcmxexample.location
+  name                = var.name
+  location            = var.location
   resource_group_name = azurerm_resource_group.hcmxexample.name
 
   ip_configuration {
-    name                          = "internalprivateip"
+    name                          = var.name
     subnet_id                     = azurerm_subnet.hcmxexample.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.hcmxexample.id
                  }
   }
   
  resource "azurerm_linux_virtual_machine" "hcmxexample" {
-  name                = "hcmxexample-machine"
+  name                = var.name
   resource_group_name = azurerm_resource_group.hcmxexample.name
-  location            = azurerm_resource_group.hcmxexample.location
+  location            = var.location
   size                = "Standard_A1_v2"
-  admin_username      = "admin"
+  admin_username      = "sivaadmin"
   admin_password      = "admin@1234"
   disable_password_authentication = false
   network_interface_ids = [
@@ -144,11 +112,37 @@ resource "azurerm_network_interface" "hcmxexample" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-
+   
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "16.04-LTS"
     version   = "latest"
   }
+}
+
+data "azurerm_public_ip" "hcmxexample" {
+  name                = var.name
+  resource_group_name = azurerm_linux_virtual_machine.hcmxexample.name
+}
+
+output "domain_name_label" {
+  value = data.azurerm_public_ip.hcmxexample.domain_name_label
+}
+
+output "public_ip_address" {
+  value = data.azurerm_public_ip.hcmxexample.ip_address
+}
+
+data "azurerm_network_interface" "hcmxexample" {
+  name                = var.name
+  resource_group_name = azurerm_linux_virtual_machine.hcmxexample.name
+}
+
+output "network_interface_id" {
+  value = data.azurerm_network_interface.hcmxexample.id
+}
+
+output "network_interface_private_ip_address" {
+  value = data.azurerm_network_interface.hcmxexample.private_ip_address
 }
