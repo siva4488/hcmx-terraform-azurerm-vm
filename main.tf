@@ -37,6 +37,19 @@ resource "azurerm_public_ip" "hcmxexample" {
   }
 }
 
+data "azurerm_public_ip" "hcmxexample" {
+  name                = "name_of_public_ip"
+  resource_group_name = "name_of_resource_group"
+}
+
+output "domain_name_label" {
+  value = data.azurerm_public_ip.hcmxexample.domain_name_label
+}
+
+output "public_ip_address" {
+  value = data.azurerm_public_ip.hcmxexample.ip_address
+}
+
 resource "azurerm_network_security_group" "hcmxexample" {
   name                = var.name
   location            = azurerm_resource_group.hcmxexample.location
