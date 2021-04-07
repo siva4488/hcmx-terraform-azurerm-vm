@@ -1,22 +1,24 @@
-
-# We strongly recommend using the required_providers block to set the
+# We strongly recommend using the required_providers block to set the 
 # Azure Provider source and version being used
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
       version = "=2.54.0"
-      subscription_id = var.subscription_id
-      client_id       = var.client_id
-      client_secret   = var.client_secret
-      tenant_id       = var. tenant_id
     }
   }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+
+  # More information on the authentication methods supported by
+  # the AzureRM Provider can be found here:
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+  # subscription_id = var.subscription_id
+  # client_id       = var.client_id
+  # client_secret   = var.client_secret
+  # tenant_id       = var.tenant_id
 }
 
 resource "azurerm_resource_group" "hcmxexample" {
@@ -61,7 +63,7 @@ resource "azurerm_network_ddos_protection_plan" "hcmxexample" {
   resource_group_name = azurerm_resource_group.hcmxexample.name
 }
 
-resource "azurerm_virtual_network" "example" {
+resource "azurerm_virtual_network" "hcmxexample" {
   name                = "virtualNetwork1"
   location            = azurerm_resource_group.hcmxexample.location
   resource_group_name = azurerm_resource_group.hcmxexample.name
@@ -118,7 +120,8 @@ resource "azurerm_network_interface" "hcmxexample" {
   location            = azurerm_resource_group.hcmxexample.location
   size                = "Standard_A1_v2"
   admin_username      = "admin"
-  admin_password      = "admin"
+  admin_password      = "admin@1234"
+  disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.hcmxexample.id,
   ]
@@ -132,92 +135,6 @@ resource "azurerm_network_interface" "hcmxexample" {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "16.04-LTS"
-    version   = "latest"
-  }
-}
-  
----------------
-
-## <https://www.terraform.io/docs/providers/azurerm/r/resource_group.html> / rg replaced with hcmxdefault
-resource "azurerm_resource_group" "hcmxdefault" {
-  name     = "HCMXTerraformTesting"
-  location = "eastus"
-}
-
-resource "azurerm_resource_group" "example" {
-  name     = "example-resources"
-  location = "West Europe"
-}
-
-resource "azurerm_public_ip" "hcmxpublic" {
-  name                = "acceptanceTestPublicIp1"
-  resource_group_name = azurerm_resource_group.hcmxpublic.name
-  location            = azurerm_resource_group.hcmxpublic.location
-  allocation_method   = "Dynamic"
-
-  ##tags = {
-    ##environment = "Production"
-  ##}
-}
-
-## <https://www.terraform.io/docs/providers/azurerm/r/availability_set.html>
-resource "azurerm_availability_set" "DemoAset" {
-  name                = "example-aset"
-  location            = azurerm_resource_group.hcmxdefault.location
-  resource_group_name = azurerm_resource_group.hcmxdefault.name
-}
-
-## <https://www.terraform.io/docs/providers/azurerm/r/virtual_network.html>
-resource "azurerm_virtual_network" "vnet" {
-  name                = "vNet"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.hcmxdefault.location
-  resource_group_name = azurerm_resource_group.hcmxdefault.name
-}
-
-## <https://www.terraform.io/docs/providers/azurerm/r/subnet.html> 
-resource "azurerm_subnet" "subnet" {
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.hcmxdefault.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix       = "10.0.2.0/24"
-}
-
-## <https://www.terraform.io/docs/providers/azurerm/r/network_interface.html>
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
-  location            = azurerm_resource_group.hcmxdefault.location
-  resource_group_name = azurerm_resource_group.hcmxdefault.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
-
-## <https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html>
-resource "azurerm_windows_virtual_machine" "example" {
-  name                = "example-machine"
-  resource_group_name = azurerm_resource_group.hcmxdefault.name
-  location            = azurerm_resource_group.hcmxdefault.location
-  size                = "Standard_F2"
-  admin_username      = "adminuser"
-  admin_password      = "P@$$w0rd1234!"
-  availability_set_id = azurerm_availability_set.DemoAset.id
-  network_interface_ids = [
-    azurerm_network_interface.example.id,
-  ]
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2016-Datacenter"
     version   = "latest"
   }
 }
