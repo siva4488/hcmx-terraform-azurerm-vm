@@ -39,7 +39,7 @@ resource "azurerm_public_ip" "hcmxexample" {
 
 data "azurerm_public_ip" "hcmxexample" {
   name                = "name_of_public_ip"
-  resource_group_name = "name_of_resource_group"
+  resource_group_name = azurerm_resource_group.hcmxexample.name
 }
 
 output "domain_name_label" {
