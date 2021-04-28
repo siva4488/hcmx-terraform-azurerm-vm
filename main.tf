@@ -117,7 +117,7 @@ resource "azurerm_network_interface" "hcmxexample" {
     publisher = var.publisher
     offer     = var.offer
     sku       = var.sku
-    version   = var.version
+    version   = var.os_version
   }
 }
 
