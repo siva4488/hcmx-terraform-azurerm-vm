@@ -62,10 +62,6 @@ variable "username" {
   description = "The username for the target VM"
   }
 
-variable "os_version" {
-  description = "The version"
-  }
-
 variable "tag1" {
   }
 
@@ -73,7 +69,4 @@ variable "offer" {
   }
 
 variable "sku" {
-  }
-
-variable "os_version" {
   }
