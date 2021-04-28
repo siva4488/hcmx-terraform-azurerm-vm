@@ -100,9 +100,9 @@ resource "azurerm_network_interface" "hcmxexample" {
   name                = var.name
   resource_group_name = azurerm_resource_group.hcmxexample.name
   location            = var.location
-  size                = "Standard_A1_v2"
-  admin_username      = "sivaadmin"
-  admin_password      = "admin@1234"
+  size                = var.vm_size
+  admin_username      = var.username
+  admin_password      = var.password
   disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.hcmxexample.id,
@@ -114,10 +114,10 @@ resource "azurerm_network_interface" "hcmxexample" {
   }
    
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    publisher = var.publisher
+    offer     = var.offer
+    sku       = var.sku
+    version   = var.version
   }
 }
 
