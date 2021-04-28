@@ -69,4 +69,6 @@ variable "offer" {
   }
 
 variable "sku" {
+   type   = string
+  default = ""
   }
