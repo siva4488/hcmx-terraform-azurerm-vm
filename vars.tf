@@ -62,6 +62,6 @@ variable "username" {
   description = "The username for the target VM"
   }
 
-variable "version" {
-  description = "The Publisher"
+variable "os_version" {
+  description = "The version"
   }
