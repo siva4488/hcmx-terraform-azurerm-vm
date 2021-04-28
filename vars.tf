@@ -50,7 +50,7 @@ variable "os" {
     publisher = "OpenLogic"
     offer = "CentOS"
     sku = "7.4"
-    version = "latest"
+    os_version = "latest"
   }
 }
 
