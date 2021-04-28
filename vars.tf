@@ -65,3 +65,12 @@ variable "username" {
 variable "os_version" {
   description = "The version"
   }
+
+variable "tag1" {
+  }
+
+variable "offer" {
+  }
+
+variable "sku" {
+  }
