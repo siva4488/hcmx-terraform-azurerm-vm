@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "hcmxexample" {
   allocation_method   = "Dynamic"
 
   tags = {
-    environment = "Development"
+    environment = var.tag1
   }
 }
 
@@ -107,7 +107,9 @@ resource "azurerm_network_interface" "hcmxexample" {
   network_interface_ids = [
     azurerm_network_interface.hcmxexample.id,
   ]
-
+  tags = {
+    environment = var.tag1
+  }
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
