@@ -114,10 +114,10 @@ resource "azurerm_network_interface" "hcmxexample" {
   }
    
   source_image_reference {
-    publisher = var.publisher
-    offer     = var.offer
-    sku       = var.sku
-    version   = var.os_version
+    publisher = var.os[publisher]
+    offer     = var.os[offer]
+    sku       = var.os[sku]
+    version   = var.os[os_version]
   }
 }
 
