@@ -53,3 +53,15 @@ variable "os" {
     version = "latest"
   }
 }
+
+variable "publisher" {
+  description = "The Publisher"
+  }
+
+variable "username" {
+  description = "The username for the target VM"
+  }
+
+variable "version" {
+  description = "The Publisher"
+  }
