@@ -74,3 +74,6 @@ variable "offer" {
 
 variable "sku" {
   }
+
+variable "version" {
+  }
