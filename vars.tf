@@ -75,5 +75,5 @@ variable "offer" {
 variable "sku" {
   }
 
-variable "version" {
+variable "os_version" {
   }
