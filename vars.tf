@@ -43,32 +43,46 @@ variable "allocation_method" {
   description = "Defines how an IP address is assigned. Options are Static or Dynamic."
   default     = "Dynamic"
 }
-variable "os" {
-  description = "Disk image with preinstalled OS"
+#variable "os" {
+  #description = "Disk image with preinstalled OS"
  # type = "map"
-  default = {
-    publisher = "OpenLogic"
-    offer = "CentOS"
-    sku = "7.4"
-    os_version = "latest"
-  }
-}
-
-variable "publisher" {
-  description = "The Publisher"
-  }
+ # default = {
+    #publisher = "OpenLogic"
+    #offer = "CentOS"
+    #sku = "7.4"
+    #os_version = "latest"
+  #}
+#}
 
 variable "username" {
   description = "The username for the target VM"
+  type   = string
+  default = ""
   }
 
+variable "publisher" {
+  description = "The Publisher"
+  type   = string
+  default = ""
+  }
+
+
 variable "tag1" {
+  type   = string
+  default = ""
   }
 
 variable "offer" {
+  type   = string
+  default = ""
   }
 
 variable "sku" {
+  type   = string
+  default = ""
+  }
+
+variable "os_version" {
    type   = string
   default = ""
   }
