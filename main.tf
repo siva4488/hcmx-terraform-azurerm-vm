@@ -57,11 +57,11 @@ resource "azurerm_network_security_group" "hcmxexample" {
   network_security_group_name = azurerm_network_security_group.hcmxexample.name
 }
 
-resource "azurerm_network_ddos_protection_plan" "hcmxexample" {
-  name                = var.name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.hcmxexample.name
-}
+# resource "azurerm_network_ddos_protection_plan" "hcmxexample" {
+# name                = var.name
+# location            = var.location
+# resource_group_name = azurerm_resource_group.hcmxexample.name
+# }
 
 resource "azurerm_virtual_network" "hcmxexample" {
   name                = var.name
@@ -69,10 +69,10 @@ resource "azurerm_virtual_network" "hcmxexample" {
   resource_group_name = azurerm_resource_group.hcmxexample.name
   address_space       = ["10.0.0.0/16"]
 
-  ddos_protection_plan {
-    id     = azurerm_network_ddos_protection_plan.hcmxexample.id
-    enable = true
-  }
+  # ddos_protection_plan {
+  #  id     = azurerm_network_ddos_protection_plan.hcmxexample.id
+  #  enable = true
+  #}
 
 }
 
